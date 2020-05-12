@@ -26,8 +26,7 @@ func (t ProductType) Value() (driver.Value, error) {
 	case IT, Decorate, Etc: //valid case
 		return string(t), nil
 	}
-	return nil, errors.New("Inalid product type value") //else is invalid
-
+	return nil, errors.New("Invalid product type value") //else is invalid
 }
 
 //Scan validate enum on read from data base
@@ -48,13 +47,13 @@ func (t *ProductType) Scan(value interface{}) error {
 		*t = pt
 		return nil
 	}
-	return fmt.Errorf("Inalid product type value :%s", st) //else is invalid
+	return fmt.Errorf("Invalid product type value :%s", st) //else is invalid
 }
 
 //Product product struct
 type Product struct {
 	gorm.Model
-	Type  ProductType
+	Type  string
 	Code  string
 	Price uint
 }
