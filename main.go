@@ -7,7 +7,6 @@ import (
 
 	"github.com/jinzhu/gorm"
 	_ "github.com/jinzhu/gorm/dialects/sqlite"
-	"github.com/sirupsen/logrus"
 )
 
 //ProductType product type
@@ -53,70 +52,11 @@ func (t *ProductType) Scan(value interface{}) error {
 //Product product struct
 type Product struct {
 	gorm.Model
-	Type  string
+	Type  ProductType
 	Code  string
 	Price uint
 }
 
 func main() {
 
-	logrus.SetLevel(logrus.DebugLevel)
-	db, err := gorm.Open("sqlite3", "test.db")
-	// db.LogMode(true)
-	if err != nil {
-		panic("failed to connect database")
-	}
-	defer db.Close()
-
-	// Migrate the schema
-	err = db.AutoMigrate(&Product{}).Error
-	if err != nil {
-		logrus.Errorf("Error on run migrate: %+v", err)
-	} else {
-		logrus.Infof("Migreate success")
-	}
-
-	// Create
-	err = db.Create(&Product{Type: Decorate, Code: "L1212", Price: 1000}).Error
-	if err != nil {
-		logrus.Errorf("Error on run create: %+v", err)
-	} else {
-		logrus.Infof("Create success")
-	}
-
-	// List
-	var products []Product
-	err = db.Find(&products, "code = ?", "L1212").Error
-	if err != nil {
-		logrus.Errorf("Error on run first: %+v", err)
-	} else {
-		logrus.Infof("Find success: %+v", products)
-	}
-
-	// Read
-	var product Product
-	err = db.First(&product, "code = ?", "L1212").Error
-	if err != nil {
-		logrus.Errorf("Error on run first: %+v", err)
-	} else {
-		logrus.Infof("First success: %+v", product)
-	}
-
-	// Update - update product's price to 2000
-	product.Type = "ib"
-	product.Price = 2000
-	err = db.Save(&product).Error
-	if err != nil {
-		logrus.Errorf("Error on run update: %+v", err)
-	} else {
-		logrus.Infof("Update success")
-	}
-
-	// Delete - delete product
-	// err = db.Delete(&product).Error
-	// if err != nil {
-	// 	logrus.Errorf("Error on run delete: %+v", err)
-	// } else {
-	// 	logrus.Infof("Delete success")
-	// }
 }
