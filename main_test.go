@@ -25,9 +25,8 @@ func TestFind(t *testing.T) {
 
 	products := []Product{}
 	err = db.Find(&products).Error
-	if err != nil {
-		assert.Contains(t, err.Error(), "Invalid product type value :ib")
-	}
+	assert.NotNil(t, err)
+	assert.Contains(t, err.Error(), "Invalid product type value :ib")
 }
 
 func TestFirst(t *testing.T) {
