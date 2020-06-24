@@ -35,11 +35,11 @@ func (t *ProductType) Scan(value interface{}) error {
 		*t = ""
 		return nil
 	}
-	st, ok := value.(string)
+	st, ok := value.([]uint8) // if we declare db type as ENUM gorm will scan value as []uint8
 	if !ok {
 		return errors.New("Invalid data for product type")
 	}
-	pt = ProductType(st) //convert type from string to ProductType
+	pt = ProductType(string(st)) //convert type from string to ProductType
 
 	switch pt {
 	case IT, Decorate, Etc: //valid case
@@ -52,7 +52,7 @@ func (t *ProductType) Scan(value interface{}) error {
 //Product product struct
 type Product struct {
 	gorm.Model
-	Type  ProductType
+	Type  ProductType `gorm:"type:ENUM('it', 'decorate', 'etc')"`
 	Code  string
 	Price uint
 }

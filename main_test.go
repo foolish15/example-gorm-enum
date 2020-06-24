@@ -17,9 +17,9 @@ func TestFind(t *testing.T) {
 	}
 	now := time.Now()
 	rows := sqlmock.NewRows([]string{"id", "type", "code", "price", "created_at", "updated_at", "deleted_at"}).
-		AddRow(1, string(IT), "code01", 40, now, now, nil).
-		AddRow(2, string(Decorate), "code02", 45, now, now, nil).
-		AddRow(3, "ib", "code03", 50, now, now, nil) //invalid record
+		AddRow(1, []uint8(IT), "code01", 40, now, now, nil).
+		AddRow(2, []uint8(Decorate), "code02", 45, now, now, nil).
+		AddRow(3, []uint8("ib"), "code03", 50, now, now, nil) //invalid record
 
 	mock.ExpectQuery("SELECT (.+) FROM `products`").WillReturnRows(rows)
 
@@ -37,7 +37,7 @@ func TestFirst(t *testing.T) {
 	}
 	now := time.Now()
 	rows := sqlmock.NewRows([]string{"id", "type", "code", "price", "created_at", "updated_at", "deleted_at"}).
-		AddRow(1, "ib", "code01", 50, now, now, nil) //invalid record
+		AddRow(1, []uint8("ib"), "code01", 50, now, now, nil) //invalid record
 
 	mock.ExpectQuery("SELECT (.+) FROM `products`").WillReturnRows(rows)
 
@@ -55,7 +55,7 @@ func TestCreate(t *testing.T) {
 	}
 	now := time.Now()
 	rows := sqlmock.NewRows([]string{"id", "type", "code", "price", "created_at", "updated_at", "deleted_at"}).
-		AddRow(1, "it", "code01", 50, now, now, nil)
+		AddRow(1, []uint8("it"), "code01", 50, now, now, nil)
 
 	mock.ExpectBegin()
 	mock.ExpectQuery("SELECT (.+) FROM `products`").WillReturnRows(rows)
